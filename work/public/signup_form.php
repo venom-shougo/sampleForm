@@ -1,5 +1,7 @@
 <?php
-require_once(__DIR__ . '/../app/UserLogic.php');
+require_once(__DIR__ . '/../app/config.php');
+
+Token::setToken();
 
 // ログイン以降に他formに移らない処理
 $result = UserLogic::checkLogin();
@@ -24,7 +26,7 @@ unset($_SESSION['login_err']);
 <body>
   <h2>New Member Page</h2>
   <?php if (isset($login_err)) : ?>
-    <p><?= h($login_err); ?></p>
+    <p><?= Utils::h($login_err); ?></p>
   <?php endif; ?>
   <form action="signup.php" method="post">
     <input type="text" name="username" placeholder="UserName"><br>
@@ -32,7 +34,7 @@ unset($_SESSION['login_err']);
     <input type="text" name="userid" placeholder="ID Name"><br>
     <input type="password" name="password" placeholder="Password"><br>
     <input type="password" name="password_conf" placeholder="Password Conf"><br>
-    <input type="hidden" name="csrf_token" value="<?= h($_SESSION["csrf_token"]); ?>">
+    <input type="hidden" name="csrf_token" value="<?= Utils::h($_SESSION["csrf_token"]); ?>">
     <button type="submit">Signin</button>
   </form>
   <a href="login_form.php">Login Page</a>

@@ -1,26 +1,23 @@
 <?php
 
-require_once(__DIR__ . '/../app/UserLogic.php');
+require_once(__DIR__ . '/../app/config.php');
 
+$validate = [];
 $err = [];
 
-// バリデーション
-if (!$userid = trim(filter_input(INPUT_POST, 'userid'))) {
-  $err['userid'] = 'Please enter your ID Name!';
-}
-
-if (!$password = trim(filter_input(INPUT_POST, 'password'))) {
-  $err['password'] = 'Password is incorrect!';
-}
-
+// ログインバリデーション
+$err = ValidateForm::setForm($_POST);
 // エラーカウント
 if (count($err) > 0) {
   $_SESSION = $err;
   header('Location: login_form.php');
   return;
 }
+$validate = ValidateForm::setLogin($_POST);
+$userid = $validate['userid'];
+$password = $validate['password'];
 // ログイン成功処理
-$result = UserLogic::login($userid, $password);
+$result = UserLogic::Login($userid, $password);
 
 // ログイン失敗処理
 if (!$result) {
@@ -42,7 +39,7 @@ if (!$result) {
   <main>
     <?php if (count($err) > 0) : ?>
       <?php foreach ($err as $e) : ?>
-        <p><?= h($e); ?></p>
+        <p><?= Utils::h($e); ?></p>
       <?php endforeach; ?>
     <?php else : ?>
       <p>Login completed!</p>

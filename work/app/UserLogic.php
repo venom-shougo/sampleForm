@@ -1,12 +1,11 @@
 <?php
 
-require_once(__DIR__ . '/config.php');
 /**クラスを定義
  * class UserLogicは連想配列を使い値を入れていく
  */
 class UserLogic
 {
-
+  
   /**
    * 同ユーザーIDがないかチェック
    * @param array $uniqueuser
@@ -21,7 +20,7 @@ class UserLogic
     $arr = [];
     $arr[] = $uniqueuser['userid'];
     try {
-      $stmt = connect()->prepare($sql);
+      $stmt = Database::connect()->prepare($sql);
       $stmt->execute($arr);
       $result = $stmt->fetch();
       if ($result['COUNT(id)'] == 1) {
@@ -55,7 +54,7 @@ class UserLogic
     // var_dump($arr);
     // exit;
     try {
-      $stmt = connect()->prepare($sql); 
+      $stmt = Database::connect()->prepare($sql); 
       $result = $stmt->execute($arr);
       return $result; 
     } catch(PDOException $e) {
@@ -69,7 +68,7 @@ class UserLogic
    * @param string $password
    * @return bool $result
    */
-  public static function login($userid, $password) 
+  public static function Login($userid, $password) 
   {
     $result = false;
     $user = self::getUserByIDname($userid);
@@ -107,7 +106,7 @@ class UserLogic
     $arr[] = $userid;
 
     try {
-      $stmt = connect()->prepare($sql); 
+      $stmt = Database::connect()->prepare($sql); 
       $stmt->execute($arr);
       $user = $stmt->fetch();
       return $user; 
@@ -158,7 +157,7 @@ class UserLogic
       $sql = "DELETE FROM users WHERE id = ?";
 
       try {
-        $stmt = connect()->prepare($sql); 
+        $stmt = Database::connect()->prepare($sql); 
         $stmt->execute($arr);
         $deleteuser = $stmt->fetch();
         $deleteuser = true;

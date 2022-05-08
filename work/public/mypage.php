@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../app/UserLogic.php');
+require_once(__DIR__ . '/../app/config.php');
 
 // ログイン中合否判定、丕は新規画面へ
 $result = UserLogic::checkLogin();
@@ -25,8 +25,8 @@ $login_user = $_SESSION['login_user'];
 </head>
 <body>
   <h2>MyPage</h2>
-    <p>User : <?= h($login_user['username']); ?></p><br>
-    <p>User : <?= h($login_user['address']); ?></p><br>
+    <p>User : <?= Utils::h($login_user['username']); ?></p><br>
+    <p>User : <?= Utils::h($login_user['address']); ?></p><br>
   <form action="logout.php" method="post">
     <input type="submit" name="logout" value="LogOut">
   </form>

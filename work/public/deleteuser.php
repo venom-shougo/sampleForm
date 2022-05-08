@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../app/UserLogic.php');
+require_once(__DIR__ . '/../app/config.php');
 
 $err = [];
 
@@ -37,7 +37,7 @@ if (!$deleteuser) {
   <body>
     <?php if (count($err) > 0) : ?>
       <?php foreach ($err as $e) : ?>
-        <?= h($e); ?>
+        <?= Utils::h($e); ?>
       <?php endforeach; ?>
     <?php else : ?>
       <h2>Withdrawal Screen</h2>

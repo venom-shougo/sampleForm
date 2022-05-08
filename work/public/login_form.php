@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../app/UserLogic.php');
+require_once(__DIR__ . '/../app/config.php');
 
 // ログイン以降に他formに移らない処理
 $result = UserLogic::checkLogin();
@@ -27,16 +27,16 @@ session_destroy();
 <body>
 <h2>Login Page</h2>
     <?php if (isset($err['message'])) : ?>
-      <p><?= h($err['message']); ?></p>
+      <p><?= Utils::h($err['message']); ?></p>
     <?php endif; ?>
   <form action="login.php" method="post">
     <input type="text" name="userid" placeholder="ID Name"><br>
       <?php if (isset($err['userid'])) : ?>
-        <p><?= h($err['userid']); ?></p>
+        <p><?= Utils::h($err['userid']); ?></p>
       <?php endif; ?>
     <input type="password" name="password" placeholder="Password"><br>
       <?php if (isset($err['password'])) : ?>
-        <p><?= h($err['password']);?></p>
+        <p><?= Utils::h($err['password']);?></p>
       <?php endif; ?>
     <button type="submit">Login</button>
   </form>

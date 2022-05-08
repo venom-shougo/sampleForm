@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../app/UserLogic.php');
+require_once(__DIR__ . '/../app/config.php');
 
 // ポスト値が空だったらエラー出力
 if (!$logout = filter_input(INPUT_POST, 'logout')) {
@@ -30,8 +30,7 @@ UserLogic::logout();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LogOut</title>
   <body>
-    <h2>Logout completed</h2>
-    <p>Logged out!</p>
+    <h2>Logout completed!</h2>
     <a href="login_form.php">Login Page</a>
   </body>
 </head>

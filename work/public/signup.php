@@ -1,45 +1,28 @@
 <?php
 
-require_once(__DIR__ . '/../app/UserLogic.php');
-
-
-$err = [];
+require_once(__DIR__ . '/../app/config.php');
 
 // トークン照会
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  validateToken();
+  Token::validateToken();
 }
 unset($_SESSION['csrf_token']);
 
-// バリデーション
-if (!$name = trim(filter_input(INPUT_POST, 'username'))) {
-  $err[] = 'Please enter your username!';
-}
-// var_dump($name);
-if (!$email = trim(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))) {
-  $err[] = 'Please enter your Email Address!';
-}
-// var_dump($email);
-if (!$userid = trim(filter_input(INPUT_POST, 'userid'))) {
-  $err[] = 'Please enter your ID Name!';
-}
-// var_dump($userid);
-$password = filter_input(INPUT_POST, 'password');
-if (!preg_match("/\A[a-z\d]{8,100}+\z/i", $password)) {
-  $err[] = 'Please enter the password from 8 to 100 characters!';
-}
-$password_conf = filter_input(INPUT_POST, 'password_conf');
-if ($password !== $password_conf) {
-  $err[] = 'Password and confirmation password are defferent!';
-}
+$err = [];
 
+// サインアップフォームバリデーション
+$validate = ValidateForm::setSignup($_POST);
+$err = $validate;
+// var_dump($err);
+// exit;
+// エラー無しで同ユーザチェック
 if (count($err) === 0) {
   $checked = UserLogic::checkUser($_POST);
   if(!empty($checked)) {
-    // checkedがtrueだったら同じユーザ名エラー
+  // checkedがtrueだったら同じユーザ名エラー
     $err[] = 'This username is already in use';
   } elseif ($checked === false) {
-    // checkedがfalseだったらユーザー登録
+  // checkedがfalseだったらユーザー登録
     $hasCreated = UserLogic::createUser($_POST);
     if (!$hasCreated) {
       $err[] = 'Registration failed';
@@ -61,7 +44,7 @@ if (count($err) === 0) {
   <form action="signup_form.php" method="post">
     <?php if (count($err) > 0) : ?>
       <?php foreach ($err as $e) : ?>
-        <p><?= h($e); ?></p>
+        <p><?= Utils::h($e); ?></p>
       <?php endforeach; ?>
     <button type="submit">Return</button>
   </form>
